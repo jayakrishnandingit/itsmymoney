@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>ItsMyMoney{% block title %} {% endblock %}</title>
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+	<link type="text/css" rel="stylesheet" href="/stylesheets/tuitionMain.css" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/js/tuitionMain.js"></script>
+	{% block head %} {% endblock %}
+</head>
+<body>
+	<!--<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script> -->
+	<div id="showException">
+		<span class="exceptionMessage">
+			<b>Oops! That was an error.</b>
+			We regret the inconvenience caused. Please try after sometime.
+			{% include "templates/supportTemplate.html" %}.
+		</span>
+		<span class="exceptionDismissImage">
+			<img class="floatRight image" id="dismissShowException" src="/images/close.png" alt="Dismiss" title="Dismiss this dialogue" />
+		</span>
+	</div>
+	<div class="headerContainer">
+		<div class="mainHeader">
+			<div class="logoContainer">
+				<img class="logo" src="/images/logo.png" alt="Logo" />
+			</div>
+			<div class="subHeader borderRadius15">
+				<div class="logout">
+					<div class="logoutIconContainer">
+						{% if loggedInEmployee.key %}
+							<a href="{% url tuition.tools.views.export %}?classHandle={{expenseExportHandle}}&handle={{spreadSheetHandle}}&date={{startOfMonth|date:'d_m_Y'}}">
+								<span class="image exportSpreadsheetIcon" title="Export Current Month Expenses"></span>
+							</a>
+							<a href="{% url tuition.user.views.profile %}">
+								<span class="image profileIcon" title="Profile"></span>
+							</a>
+						{% endif %}
+						<a href="{{url}}">
+							<span class="image icon logoutIcon" title="Logout"></span>
+						</a>
+					</div>
+					<div class="welcome">
+						Welcome,
+						<span class="userName">
+							{% if loggedInEmployee.key %}
+								{{loggedInEmployee.name}}
+							{% else %}
+								{{loggedInEmployee.email}}
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav>
+			<ul>
+				<li><a href="{% url tuition.home.views.home %}">Home</a></li>
+				{% if loggedInEmployee.key %}
+					<li><a href="javascript:void(0);">Me</a>
+						<ul>
+							<li><a href="{% url tuition.user.views.profile %}">Profile</a></li>
+						</ul>
+					</li>
+					<li><a href="javascript:void(0);">Expense</a>
+						<ul>
+							<li><a href="{% url tuition.tools.views.addAnExpense %}">New Expense</a></li>
+							<li><a href="{% url tuition.tools.views.viewUserExpenses %}">View Expenses</a></li>
+						</ul>	
+					</li>
+					<li><a href="javascript:void(0);">Debt</a>
+						<ul>
+							<li><a href="{% url tuition.tools.views.addADebt %}">New Debt</a></li>
+							<li><a href="{% url tuition.tools.views.viewUserDebts %}">View Debts</a></li>
+						</ul>	
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
+	</div>
+	<div class="mainContent">
+		<div id="likeLinkToggle" class="likeLinkToggleButton">
+			<div class="likeContent">
+				L
+				<br clear="all" />
+				I
+				<br clear="all" />
+				K
+				<br clear="all" />
+				E
+			</div>
+		</div>
+		<div class="likeLinks">
+			<div class="likeContent gplus">
+				<!-- Place this tag where you want the +1 button to render. -->
+				<div class="g-plusone" data-size="medium" data-href="https://plus.google.com/115621442804126765972/posts"></div>
+			</div>
+		</div>
+		<div id="alertSuccess" class="alert alert-success">
+		  	{% block alertSuccessContent %}{% endblock %}
+		</div>
+		<div id="alertError" class="alert alert-error">
+			{% block alertErrorContent %}{% endblock %}
+		</div>
+		<div id="alertInfo" class="alert alert-info">
+		  	{% block alertInfoContent %}{% endblock %}
+		</div>
+		<div id="transparentDiv" class="disableVision"></div>
+		{% block content %} {% endblock %}
+	</div>
+	<div class="footer">
+		<div class="footerSub">
+			<div class="footerContent">
+				<a href="/">
+					Home
+				</a>
+			</div>
+			<div class="footerContent">
+				<a href="/#aboutUs">
+					About Us
+				</a>
+			</div>
+			<div class="footerContent">
+				<a href="mailto:{{supportEmail}}?subject=[Support]">
+					Support
+				</a>
+			</div>
+			<div class="footerContent">
+				<a href="/#contactUs">
+					Contact Us
+				</a>
+			</div>	
+		</div>
+		<div class="footerSub">
+			<div class="footerContent">
+				<a href="https://plus.google.com/115621442804126765972/posts" target="_blank">
+					<div class="image gplusLinkIcon"></div>
+				</a>
+			</div>
+		</div>
+		<div class="footerSub">
+			<div class="footerContent">
+				© 2013 Jayakrishnan Damodaran. All rights reserved.
+			</div>
+		</div>
+	</div>
+	<script>
+		$('#likeLinkToggle').on('click', function () {
+			$(this).next('div.likeLinks').toggle(800);
+		});
+		$('#alertSuccess').hide();
+		$('#alertError').hide();
+		$('#alertInfo').hide();
+		$('#dismissShowException').bind('click', function(elem) {
+			$('#dismissShowException').parent('span').parent('#showException').slideUp(1000);
+		});
+	</script>
+	<!-- Place this tag in your head or just before your close body tag. -->
+	<script type="text/javascript">
+		window.___gcfg = {
+		  lang: 'en-US',
+		  parsetags: 'onload'
+		};
+	  (function() {
+	    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+	    po.src = 'https://apis.google.com/js/plusone.js?onload=onLoadCallback';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
+</body>
+</html>

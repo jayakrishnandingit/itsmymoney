@@ -1,0 +1,38 @@
+<div class="formContainer">
+	<form action="" method="post" class="addAnExpense" name="addAnExpense" id="addAnExpense">
+		<div class="formLabel requiredField">
+			Type of Expense
+		</div>
+		<div class="formField">
+			{{ form.type }}
+			<br clear="all" />
+			<span id="error_type" name="type" class="showError"></span>
+		</div>
+		<div class="formLabel requiredField">
+			Amount
+		</div>
+		<div class="formField">
+			{{ form.amount }}
+			<br clear="all" />
+			<span id="error_amount" name="amount" class="showError"></span>
+		</div>
+		<div class="formLabel requiredField">
+			Date of Expense
+		</div>
+		<div class="formField">
+			{{ form.dateOfExpense }}
+			<br clear="all" />
+			<span id="error_dateOfExpense" name="dateOfExpense" class="showError"></span>
+		</div>
+		<div class="formLabel">
+			Comments
+		</div>
+		<div class="formField">
+			{{ form.comments }}
+		</div>
+		<div class="saveButtonContainer">
+			<input type="button" value="Save" id="saveAnExpenseButton">
+			<input type="button" value="Do it Later" id="cancelSaveExpenseButton" class="cancelSave">
+		</div>
+	</form>
+</div>

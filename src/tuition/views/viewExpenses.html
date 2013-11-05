@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+{% load humanize %}
+{% load customFilters %}
+{% block title %} - View Monthly Expenses {% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+  <script type="text/javascript" language="javascript" src="/js/jquery_loadTemplate.js"></script>
+	<script>
+    var exportURI = '{% url tuition.tools.views.export %}';
+    var addExpenseURI = '{% url tuition.tools.views.addAnExpense %}';
+    var exportHandle = {{exportHandle|jsonify|safe}};
+    var classHandle = {{classHandle|jsonify|safe}};
+    classHandle = classHandle.EXPENSE;
+	</script>
+{% endblock %}
+{% block alertSuccessContent %}
+	<div id="deleteExpenseSuccessAlert" class="content">
+		<b>Great!</b> You successfully deleted the expense.
+	</div>
+  <div id="expenseSuccessAlert" class="content">
+    <b>Great!</b> You successfully marked your expenses.    
+  </div>
+{% endblock %}
+{% block alertErrorContent %}
+	<div id="deleteExpenseErrorAlert" class="content">
+		<b>Oops!</b> Could not delete the expense.
+	</div>
+  <div id="expenseErrorAlert" class="content">
+    <b>Oops!</b> Clean a few things up and try submitting again.
+  </div>
+{% endblock %}
+{% block content %}
+	<h2 class="marginTop2P5P">Your Monthly Expenses</h2>
+	<div class="glossary">
+    <div class="firstLevel">
+        <div class="filterLeft">
+          {{yearFilterForm.yearSelect}}
+        </div>
+        <div class="filterRight">
+        </div>
+    </div>
+    <div class="secondLevel">
+  		{% for monthNumber, monthName in monthNameDict.items %}
+  			<div class="contentContainer">
+  				<input id="{{monthNumber}}" class="radioButton monthNumber" name="monthNameRadio" type="radio" value="{{monthNumber}}" />
+  				<label class="contentLabel" for="{{monthNumber}}">{{monthName}}</label>
+  			</div>
+  		 {% endfor %}
+    </div>
+	</div>
+	<div id="toolsContainer" class="logoutIconContainer marginBottomHalfP">
+		<a id="exportToSpreadsheet" class="image exportSpreadsheetIcon" title="Export to Google Spreadsheet"></a>
+    <span id="addExpenseIcon" class="image icon addIcon" title="Add an Expense"></span>
+	</div>
+	<div class="filterMain">
+		<div class="filterLeft">
+			<a id="filterExpenseByToday" href="javascript:void(0);" class="filterSub current">Today</a>
+			|
+			<a id="filterExpenseByWeek" href="javascript:void(0);" class="filterSub">This Week</a>
+			|
+			<a id="filterExpenseByMonth" href="javascript:void(0);" class="filterSub">This Month</a>
+		</div>
+		<div class="filterRight displayNone">
+			<a id="sortExpenseByDate" href="javascript:void(0);" class="filterSub current">Date</a>
+			|
+			<a id="sortExpenseByAmount" href="javascript:void(0);" class="filterSub">Amount</a>
+			|
+			<a id="sortExpenseByType" href="javascript:void(0);" class="filterSub">Type</a>
+		</div>
+	</div>
+  <div class="popupContainer">
+    {% include "templates/newExpenseForm.html" %}
+  </div>
+	<table class="table table-striped">
+   		<thead>
+      		<tr class="blackHead">
+	            <th>Type</th>
+	            <th class="amount">Amount</th>
+				<th>Date of Expense</th>
+				<th>Comments</th>
+				<th>Delete</th>  
+      		</tr>  
+    	</thead>  
+    	<tbody id="expenseListContainer"></tbody>
+  	</table> 
+    <script>
+  		$('#filterExpenseByToday').bind('click', filterByDate);
+  		$('#filterExpenseByWeek').bind('click', filterByWeek);
+  		$('#filterExpenseByMonth').bind('click', filterByMonth);
+      $('#addExpenseIcon').on('click', function () {
+        showPopUpForm();
+      });
+  		$('#exportToSpreadsheet').hide();
+      $('#exportToSpreadsheet').bind('click', setExportURI);
+  		$('div.filterMain').find('div.filterLeft').hide();
+      bindOnClicksForExpenseMonthFilter(true);
+      $('#id_yearSelect').bind('change', binOnChangeForExpenseYearFilter);
+      $("#id_dateOfExpense" ).datepicker({'dateFormat' : 'dd/mm/yy'});
+      $('#saveAnExpenseButton').bind('click', function() {
+          saveAnExpense(true);
+          $(this).prop('disabled',true);
+          $(this).val('Wait');
+      });
+      $('#cancelSaveExpenseButton').bind('click', function() {
+        closePopUpForm('addAnExpense', true);
+      });
+  		/*$('#sortExpenseByDate').bind('click', sortedByDate);
+  		$('#sortExpenseByAmount').bind('click', sortedByAmount);
+  		$('#sortExpenseByType').bind('click', sortedByType);*/
+  		/*$('#exportToSpreadsheet').bind('click', function () {
+  			createCSVAndExport('SpreadSheet');
+  		});*/
+    </script>
+    <script type="text/html" id="expenseListTemplate">
+	  <tr data-id="key" class="hoverBlue">  
+        <td data-content="type"></td>  
+        <td class="amount formatme" data-content="amount"></td>
+        <td data-content="dateOfExpense"></td>
+        <td data-content="comments"></td>
+        <td><img class="image action delete" src="/images/delete.png" alt="Delete" title="Delete expense" /></td> 
+      </tr>
+    </script>
+    <script type="text/html" id="expenseNoRecordsTemplate">
+  	  <tr>
+    		<th class="noRecords" colspan="5">
+    			No Expenses to list
+    		</th>
+  	  </tr>
+    </script>
+    <script type="text/html" id="expenseTotalTemplate">
+      <tr class="total">
+        <td class="label">Total</td>
+        <td id="totalValue" class="amount formatme value"></td>
+      </tr>
+    </script>
+{% endblock %}	

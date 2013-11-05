@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %} - Export {% endblock %}
+{% block head %}
+	<script>
+		$(document).ready(function () {
+			{% if isSaved %}
+				$('#alertSuccess').show();
+			{% else %}
+				$('#alertError').show();
+			{% endif %}
+		});
+	</script>
+	
+{% endblock %}
+{% block alertSuccessContent %}
+	<div id="exportSuccessAlert" class="content">
+		<b>Great!</b> You successfully exported your {{classHandle}} to {{handle}} as <b>{{fileName}}</b>.
+		<br clear="all" />
+		You can view your document&nbsp;<a href="{{linkToFile}}" target="_blank">here</a>.
+	</div>
+{% endblock %}
+{% block alertErrorContent %}
+	<div id="exportErrorAlert" class="content">
+		<b>Oops!</b>
+		{% if noData %}
+			 You have no {{classHandle}} to export to {{handle}}.
+		{% else %}
+			{% if invalidHandle %}
+				Sorry, currently we do not support exporting to {{handle}} formats.
+			{% endif %}
+		{% endif %}
+	</div>
+{% endblock %}

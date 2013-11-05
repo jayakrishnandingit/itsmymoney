@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %} - Add an Expense {% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+{% endblock %}
+{% block alertSuccessContent %}
+	<div id="expenseSuccessAlert" class="content">
+		<b>Great!</b> You successfully marked your expenses.		
+	</div>
+{% endblock %}
+{% block alertErrorContent %}
+	<div id="expenseErrorAlert" class="content">
+		<b>Oops!</b> Clean a few things up and try submitting again.
+	</div>
+{% endblock %}
+{% block content %}
+	<h2 class="marginTop2P5P">Mark Your Expenses</h2>
+	{% include "templates/newExpenseForm.html" %}
+	<script>
+		$('.formContainer').show();
+		$("#id_dateOfExpense" ).datepicker({'dateFormat' : 'dd/mm/yy'});
+		$('#saveAnExpenseButton').bind('click', function() {
+  			saveAnExpense(false);
+  			$(this).prop('disabled',true);
+  			$(this).val('Wait');
+		});
+		$('#cancelSaveExpenseButton').bind('click', function(){
+			window.location.href = "/";
+		});
+	</script>
+{% endblock %}

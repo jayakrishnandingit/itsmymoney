@@ -1,0 +1,3 @@
+APP_DOMAIN = 'localhost:9000'
+GOOGLE_API_WEB_APP_CLIENT_ID = '1078565712000-h7teplkqjqt300dmvjcosm79mmbirtu9.apps.googleusercontent.com'
+GOOGLE_API_WEB_APP_CLIENT_SECRET = 'uXO8Dqh3T1-4S0ANQiaSK3bB'

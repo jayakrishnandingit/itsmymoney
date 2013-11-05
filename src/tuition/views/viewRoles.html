@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %} - Roles {% endblock %}
+{% block head %}
+<script type="text/javascript">
+<!--
+
+//-->
+</script>
+{% endblock %}
+{% block content %}
+	<h2>Roles &amp; Permissions</h2>
+	<a href="/addRole" title="Add a Role">Add a Role</a>
+	<table class="rolePermission" cellpadding="10" cellspacing="10" border="0">
+	  <tr>
+	    <th></th>
+	    <!-- {% for role in roles %}
+	    	<th>role.name</th>
+	    {% endfor %} -->
+	    <th>
+	    	Principal
+	    </th>
+	    <th>
+	    	Teacher
+	    </th>
+	    <th>
+	    	Student
+	    </th>
+	    <th>
+	    	Office Staff
+	    </th>
+	  </tr>
+  	{% for permission in permissions %}
+  		<tr>
+  			<td>{{permission}}</td>
+  			<td><img class="middle paddingLeft35P" src="/images/success.png"></td>
+  			<td><img class="middle paddingLeft35P" src="/images/success.png"></td>
+  			<td></td>
+  			<td></td>
+  		</tr>
+  	{% endfor %}
+  	
+</table>
+
+{% endblock %}

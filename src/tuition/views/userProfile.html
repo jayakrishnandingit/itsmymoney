@@ -1,0 +1,165 @@
+{% extends "layout.html" %}
+{% block title %} - My Profile {% endblock %}
+{% block head %} 
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+	<!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    	// Load the Visualization API and the piechart package.
+      	google.load('visualization', '1.0', {'packages':['corechart']});
+      	$(document).ready(function () {
+      		showStatistics(0, $('#expenseStats'));
+      	});
+    </script>
+{% endblock %}
+{% block alertSuccessContent %}
+	<div id="addUserSuccessAlert" class="content">
+		<b>Great!</b> You have successfully saved your details.
+	</div>
+{% endblock %}
+{% block content %}
+<h2 class="marginTop2P5P">My Profile</h2>
+<div class="profileMain">
+	<div class="profileImageContainer">
+		<img class="profileImage" src="{{imageUrl}}" alt="Profile_Image">	
+	</div>
+	<div class="profileContent">
+		<div id="name" class="name">{{loggedInEmployee.name}}</div>
+		{% if loggedInEmployee.about %}
+			<div id="about" class="about">{{loggedInEmployee.about}}</div>
+		{% else %}
+			{% if about %}
+				<div id="about" class="about">{{about}}</div>
+			{% endif %}
+		{% endif %}
+		<div class="verifiedEmail">
+			<span alt="email" class="image emailIcon"></span>
+			<span id="email">&nbsp;{{loggedInEmployee.email}}</span>
+		</div>
+		<br clear="all" />
+		<div class="email">
+			<span class="image emailIcon"></span>
+			<span id="alternateEmail">&nbsp;{{loggedInEmployee.alternateEmail}}</span>
+		</div>
+		<br clear="all" />
+		{% if loggedInEmployee.location %}
+			<div class="location">
+				<span class="image locationIcon"></span>
+				<span id="location">&nbsp;{{loggedInEmployee.location}}</span>
+			</div>
+		{% else %}
+			{% if locationFromPlus %}
+				<div class="location">
+					<span class="image locationIcon"></span>
+					<span id="location">&nbsp;{{locationFromPlus}}</span>
+				</div>
+			{% endif %}
+		{% endif %}
+		<div class="dob">
+			<span class="image dobIcon"></span>
+			<span id="dob">&nbsp;{{loggedInEmployee.dob|date:"d M Y"}}</span>
+		</div>
+		<br clear="all" />
+		<div class="follow">
+			<a href="{{publicProfile}}" target="_blank">
+				<img class="image" src="/images/gplus.png" />
+			</a>
+		</div>
+	</div>
+	<div class="profileAction">
+		<div id="toolsContainer" class="logoutIconContainer marginBottomHalfP">
+	    	<span id="editUserIcon" class="image icon editIcon" title="Edit User"></span>
+		</div>
+	</div>
+</div>
+<div class="popupContainer">
+	<div class="formContainer">
+		<form action="" method="post" class="addAnExpense" name="addAUser" id="addAUser">
+			<div class="formLabel requiredField">
+				First Name
+			</div>
+			<div class="formField">
+				{{ form.firstName }}
+				<br clear="all" />
+				<span id="error_firstName" name="firstName" class="showError"></span>
+			</div>
+			<div class="formLabel requiredField">
+				Last Name
+			</div>
+			<div class="formField">
+				{{ form.lastName }}
+				<br clear="all" />
+				<span id="error_lastName" name="lastName" class="showError"></span>
+			</div>
+			<div class="formLabel requiredField">
+				Alternate Email
+			</div>
+			<div class="formField">
+				{{ form.alternateEmail }}
+				<br clear="all" />
+				<span id="error_alternateEmail" name="alternateEmail" class="showError"></span>
+			</div>
+			<div class="formLabel requiredField">
+				Date of Birth
+			</div>
+			<div class="formField">
+				{{ form.dob }}
+				<br clear="all" />
+				<span id="error_dob" name="dob" class="showError"></span>
+			</div>
+			<div class="formLabel">
+				About
+			</div>
+			<div class="formField">
+				{{ form.about }}
+				<br clear="all" />
+				<span id="error_about" name="about" class="showError"></span>
+			</div>
+			<div class="saveButtonContainer">
+				<input type="button" value="Save" id="saveUser">
+				<input type="button" value="Close" id="cancelSaveUserButton" class="cancelSave">
+				<input type="hidden" name="key" value="{{loggedInEmployee.key}}" id="id_keyHidden">
+			</div>
+		</form>
+	</div>
+</div>
+<div class="tabContainer">
+	<div class="firstLevel">
+		<ul>
+			<li id="expenseStats" class="current"><a href="javascript:void(0);">Expense Stats</a></li>
+			<li id="debtStats" class=""><a href="javascript:void(0);">Debt Stats</a></li>
+		</ul>
+	</div>
+	<div class="secondLevel">
+		<div class="stats" id="statsContainer"></div>
+	</div>
+</div>
+<script>
+	$('.formContainer').hide();
+	$('#editUserIcon').on('click', function (){
+		showPopUpForm();
+	});
+	$("#id_dob" ).datepicker({
+		'dateFormat' : 'dd/mm/yy',
+		'changeMonth' : true,
+		'changeYear' : true,
+		'yearRange' : '1950:2013'
+	});
+	$('#saveUser').on('click', function() {
+		saveUser();
+		$(this).prop('disabled',true);
+		$(this).val('Wait');
+	});
+	$('#cancelSaveUserButton').on('click', function() {
+		closePopUpForm('addAUser');
+	});
+	$('#expenseStats').on('click', function () {
+		showStatistics(0, this);
+	});
+	$('#debtStats').on('click', function () {
+		showStatistics(1, this);
+	});
+</script>
+{% endblock %}

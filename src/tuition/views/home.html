@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block title %} - Home {% endblock %}
+{% block content %}
+	<div class="home">
+		<div class="informationBoxContainer">
+			<div class="informationBox">
+				<div class="informationBoxHeader">
+					<h1><a name="aboutUs">What is ItsMyMoney?</a></h1>
+				</div>
+				<div class="informationBoxContent">
+					In 2011, when I started as a Software Developer I was overwhelmed by the kind of opportunity this specialization gave me. I started thinking of developing something useful to people so that it becomes a part of their lives. So my baby step to development started with an idea of creating a website. ItsMyMoney is a place where you will find tools that you have felt missing in your day to day life. Even though it turned out to be my learning playground, I strive to put forth a convenience store for you.
+				</div>
+			</div>
+		</div>
+		<div class="informationBoxContainerOrange">
+			<div class="informationBox">
+				<div class="informationBoxHeaderWhite">
+					<h1>Have you ever been bankrupt?</h1>
+				</div>
+				<div class="informationBoxContentWhite">
+					Have you ever come across this situation? Nothing is as irritating as wondering WHERE DID ALL MY MONEY GO isn't it? If you have not come across this I should suppose it to be a lie because I have seen many including myself doing the same. Scribbling pads, diary entries, online bank transaction details, ATM receipts may not help you remember for what did you spend those money. We are lending you a helping hand so that you won't, atleast from next month, ask yourself the same question.
+				</div>
+			</div>
+		</div>
+		<div class="informationBoxContainerLightBlue">
+			<div class="informationBox">
+				<div class="informationBoxHeader">
+					<h1>Why should you be here?</h1>
+				</div>
+				<div class="informationBoxContent">
+					There are may be a hell lot of reasons for you to be criticising us, thats good because it helps us improve. But, we make the same amount of reasons for you to stay with us too. You can 
+					<a href="{% url tuition.tools.views.addAnExpense %}" target="_blank">mark your expenses</a>, 
+					<a href="{% url tuition.tools.views.viewUserExpenses %}" target="_blank">manage them</a>, export it your Google Drive(See you are in Cloud). 
+					More is what we say because we are expanding so are your conveniences.
+				</div>
+			</div>
+		</div>
+		<div class="informationBoxContainerBlack">
+			<div class="informationBox">
+				<div class="informationBoxHeaderWhite">
+					<h1>You are socialized.</h1>
+				</div>
+				<div class="informationBoxContentWhite">
+					<!-- <div class="image gplusLinkIcon"></div> | <div class="image facebookLinkIcon"></div> -->
+					You already have a social account, probably Google, where you keep all your data. So why create another one for us? That is why we help you link to your social profiles. We only ask for your basic informations and nothing more. No wall posts or no comments unless you say so. It's a promise. Socializing helps in keeping your data in Cloud so that it is available to you where ever you are and hence does not prohibit you from being contained in this site. Your data is always yours and you have full control over it. 
+					<br clear="all" />
+					You are the King.
+				</div>
+			</div>
+		</div>
+		<div class="informationBoxContainer">
+			<div class="informationBox">
+				<div class="informationBoxHeader">
+					<h1><a name="contactUs">Before you go.</a></h1>
+				</div>
+				<div class="informationBoxContent">        
+					<div class="socialLinks">
+						<div class="socialLabel">
+							We are on
+						</div>
+						<div class="socialContent">
+							<!-- Place this code where you want the badge to render. -->
+							<a href="//plus.google.com/115621442804126765972?prsrc=3" rel="publisher" target="_top" style="text-decoration:none;">
+								<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/>
+							</a>
+						</div>
+						<div class="socialLabel">
+							Follow Us
+						</div>
+						<div class="socialContent">
+							<!-- Place this tag where you want the widget to render. -->
+							<div class="g-follow" data-annotation="bubble" data-height="20" data-href="//plus.google.com/115621442804126765972" data-rel="publisher"></div>
+						</div>
+						<div class="socialLabel">
+							Share us
+						</div>
+						<div class="socialContent">
+							<!-- Place this tag where you want the share button to render. -->
+							<div class="g-plus" data-action="share" data-annotation="bubble" data-href="http://gcdc2013-itsmymoney.appspot.com"></div>
+						</div>
+						<div class="socialLabel">
+							Like us
+						</div>
+						<div class="socialContent">
+							<!-- Place this tag where you want the +1 button to render. -->
+							<div class="g-plusone" data-size="medium" data-href="https://plus.google.com/115621442804126765972/posts"></div>
+						</div>
+						<div class="fullContainer">
+							If you think we helped you.
+						</div>
+					</div>
+					<div class="fullContainer">
+						You can always write to us at 
+						<span class="supportEmail">
+							<a href="mailto:{{supportEmail}}?subject=[Support]">{{supportEmail|safe}}</a>
+						</span>.
+						&nbsp;Because it is your valuable feedbacks and criticism that makes us grow. Moreover, by sharing your experience with us we can strive to give you a novel treat next time you visit us. Let us move together sharing, fighting, criticising and make this journey and this endeavour a memorable one. 
+						<br clear="all" />
+						Thanks a lot!
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

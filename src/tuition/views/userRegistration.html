@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block title %} - User Registration {% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+	<script>
+		$(document).ready(function () {
+			{% if queryString == 1 %}
+				$('#alertInfo').show();
+			{% endif %}
+		});
+	</script>
+{% endblock %}
+{% block alertInfoContent %}
+	<div id="addUserInfoAlert" class="content">
+		<b>Are you a newbie?</b> Please register yourself to proceed. <b>ITS FREE!</b>
+	</div>
+{% endblock %}
+{% block alertSuccessContent %}
+	<div id="addUserSuccessAlert" class="content">
+		<b>Great!</b> You have successfully registered. You will be redirected to your profile in 5sec.
+	</div>
+{% endblock %}
+{% block alertErrorContent %}
+	<div id="addUserErrorAlert" class="content">
+		<b>Oops!</b> Clean a few things up and try submitting again.
+	</div>
+{% endblock %}
+{% block content %}
+	<h2 class="marginTop2P5P">New User Registration</h2>
+	<div class="formContainer">
+		<form action="" method="post" class="addAnExpense" name="addAUser" id="addAUser">
+			<div class="formLabel requiredField">
+				First Name
+			</div>
+			<div class="formField">
+				{{ form.firstName }}
+				<br clear="all" />
+				<span id="error_firstName" name="firstName" class="showError"></span>
+			</div>
+			<div class="formLabel requiredField">
+				Last Name
+			</div>
+			<div class="formField">
+				{{ form.lastName }}
+				<br clear="all" />
+				<span id="error_lastName" name="lastName" class="showError"></span>
+			</div>
+			<div class="formLabel requiredField">
+				Alternate Email
+			</div>
+			<div class="formField">
+				{{ form.alternateEmail }}
+				<br clear="all" />
+				<span id="error_alternateEmail" name="alternateEmail" class="showError"></span>
+			</div>
+			<div class="formLabel requiredField">
+				Date of Birth
+			</div>
+			<div class="formField">
+				{{ form.dob }}
+				<br clear="all" />
+				<span id="error_dob" name="dob" class="showError"></span>
+			</div>
+			<div class="formLabel">
+				About
+			</div>
+			<div class="formField">
+				{{ form.about }}
+				<br clear="all" />
+				<span id="error_about" name="about" class="showError"></span>
+			</div>
+			<div class="saveButtonContainer">
+				<input type="button" value="Save" id="saveUser">
+				<input type="hidden" value="" id="id_keyHidden">
+			</div>
+		</form>
+	</div>
+	<script>
+		$('.formContainer').show();
+		$("#id_dob" ).datepicker({
+			'dateFormat' : 'dd/mm/yy',
+			'changeMonth' : true,
+			'changeYear' : true,
+			'yearRange' : '1950:2013'
+		});
+		$('#saveUser').bind('click', function() {
+  			saveUser();
+  			$(this).prop('disabled',true);
+  			$(this).val('Wait');
+		});
+	</script>
+{% endblock %}

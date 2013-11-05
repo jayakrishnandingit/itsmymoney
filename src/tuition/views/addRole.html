@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %} - Add a Role {% endblock %}
+{% block content %}
+	<h2>Mark Your Expenses</h2>
+	<div class="formContainer">
+		<form action="" method="post" class="addAnExpense" name="addARole" id="addARole">
+			<div class="formLabel">
+				Role Name
+			</div>
+			<div class="formField">
+				{{ form.roleName }}
+			</div>
+			<div class="formLabel">
+				Privileges
+			</div>
+			<div class="formField">
+				{{ form.privileges }}
+			</div>
+			<div class="saveButtonContainer">
+				<input type="button" value="Save">
+				<input type="button" value="Do it Later" class="cancelSave">
+			</div>
+		</form>
+	</div>
+{% endblock %}

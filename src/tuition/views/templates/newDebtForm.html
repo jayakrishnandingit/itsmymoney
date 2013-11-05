@@ -1,0 +1,63 @@
+<div id="addDebtFormContainer" class="formContainer">
+	<form action="" method="post" class="addAnExpense" name="addDebt" id="addDebt">
+		<div class="formLabel requiredField">
+			Type of Debt
+		</div>
+		<div class="formField">
+			{{ form.type }}
+			<br clear="all" />
+			<span id="error_type" name="type" class="showError"></span>
+		</div>
+		<div class="formLabel requiredField">
+			Amount
+		</div>
+		<div class="formField">
+			{{ form.amount }}
+			<br clear="all" />
+			<span id="error_amount" name="amount" class="showError"></span>
+		</div>
+		<div class="formLabel requiredField">
+			Incurred Debt on
+		</div>
+		<div class="formField">
+			{{ form.incurredDate }}
+			<br clear="all" />
+			<span id="error_incurredDate" name="incurredDate" class="showError"></span>
+		</div>
+		<div class="formLabel requiredField">
+			Return Date
+		</div>
+		<div class="formField">
+			{{ form.returnDate }}
+			<br clear="all" />
+			<span id="error_returnDate" name="returnDate" class="showError"></span>
+		</div>
+		<div class="formLabel">
+			Already Returned
+		</div>
+		<div class="formField">
+			{{ form.hasReturned }}
+			<br clear="all" />
+			<span id="error_hasReturned" name="hasReturned" class="showError"></span>
+		</div>
+		<br clear="all" />
+		<div class="formLabel">
+			Mark as Expense
+		</div>
+		<div class="formField">
+			{{ form.expenseOfMonth }}
+			<br clear="all" />
+			<span id="error_expenseOfMonth" name="expenseOfMonth" class="showError"></span>
+		</div>
+		<div class="formLabel">
+			Comments
+		</div>
+		<div class="formField">
+			{{ form.comments }}
+		</div>
+		<div class="saveButtonContainer">
+			<input type="button" value="Save" id="saveADebtButton">
+			<input type="button" value="Close" id="cancelSaveDebtButton" class="cancelSave">
+		</div>
+	</form>
+</div>
