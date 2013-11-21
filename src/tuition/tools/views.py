@@ -74,7 +74,7 @@ def export(request):
       exporterInstance = exporterClass(
           serializedObjects=serializedObjectList, 
           request=request, 
-          remove=['key', 'user', 'createdOn', 'updatedOn'], 
+          remove=['key', 'user', 'calendarReminderURL', 'createdOn', 'updatedOn'],
           date=exportDate,
           namePrefix=classHandle
       )
@@ -105,6 +105,11 @@ def viewUserDebts(request, userKey=None):
     from tuition.utils.appConstants import MONTH_NUM_FULL_NAME_DICT
     from tuition.utils.utils import ExportHandle, ExportClassHandle
 
+    # keyToSetReminder = request.GET.get('key', None)
+    # if keyToSetReminder:
+    #   debt = Debt.get(keyToSetReminder)
+    #   serializedObjectList = [debt.toDict]
+    #   GoogleCalendarService()
     loggedInEmployee = AppManager.getUserByEmail(AppManager.getCurrentLoggedInUser().email())
     form = DebtForm(initial={'incurredDate' : datetime.date.today().strftime('%d/%m/%Y')})
     markAsReturnForm = DebtReturnForm()

@@ -11,6 +11,7 @@ from tuition.utils.appConfig import decorator
 
 drive_service = build('drive', 'v2')
 plus_service = build('plus', 'v1')
+calendar_service = build('calendar', 'v3')
 
 class ExportClassHandleEnum(SortedDict):
 	def __init__(self, *args, **kwargs):
@@ -71,11 +72,10 @@ class Exporter(object):
 		self.exportDate = datetime.datetime.combine(self.exportDate, datetime.datetime.now().time())
 
 	def _clean(self, value):
-		keysToRemove = set(self.formatSpecifiers.get('remove', []))
+		keysToRemove = self.formatSpecifiers.get('remove', [])
 		for obj in value:
-			if keysToRemove.issubset(set(obj.keys())):
-				for item in list(keysToRemove):
-					obj.pop(item)
+			for key in keysToRemove:
+				obj.pop(key, None)
 		return value
 
 class ExportToSpreadSheet(Exporter):
@@ -144,6 +144,19 @@ class GooglePlusService(object):
 			'userInfo' : self.user_response
 		}
 
+class GoogleCalendarservice(object):
+	request = None
+	serializedObjects = []
+
+	def __init__(self, serializedObjects, request, **formatSpecifiers):
+		self.serializedObjects = serializedObjects
+		self.request = request
+		self.formatSpecifiers = formatSpecifiers
+
+	@decorator.oauth_required
+	def insertEvent(self, recurringEvent=False):
+		pass
+
 def URLCreator(urlPattern, *keys):
     """A utility method to convert custom defined URLs(probably URLs in regex) to real time URLs for redirection.
     Pass a url pattern with or without key values that you want to substitute, it will return the desired URL for redirection.
@@ -157,13 +170,15 @@ def URLCreator(urlPattern, *keys):
 
     @author: jayakrishnan
     """
+    import re
+
     if urlPattern:
         urlPattern = urlPattern.replace('^', '')
         urlPattern = urlPattern.replace('$', '')
         urlSplit = urlPattern.split('/')
         i = 0
-        if keys or len(keys) > 0:
-	        for uri in urlSplit:
+        for uri in urlSplit:
+        	if keys or len(keys) > 0:
 	            if i < len(keys) and re.match(uri, keys[i]):
 	                urlSplit[urlSplit.index(uri)] = keys[i]
 	                i += 1

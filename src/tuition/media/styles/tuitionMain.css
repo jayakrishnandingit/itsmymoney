@@ -3,7 +3,7 @@ body {
 	font-size: 12px;
 	background-color: white;
 	/* background-image: url("/images/gradientfromtop.gif");
-	background-repeat:repeat-x; */ */
+	background-repeat:repeat-x; */
 	padding: 4px;
 	margin: 0px;
 	border: 0px;
@@ -32,6 +32,7 @@ a {
 	width: 100%;
 	float: left;
 	position: fixed;
+	top: 0;
 	z-index: 1;
 	background: #666;
 	background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#000));
@@ -316,7 +317,7 @@ nav ul li {
 	/* border-top: 1px solid #CDCDCD;
 	border-left: 1px solid #CDCDCD;
 	border-right: 1px solid #CDCDCD; */
-	padding: 1% 5% 1% 1%;
+	padding: 1% 3% 1% 1%;
 	margin: 0 0 0 1%;
 }
 
@@ -596,6 +597,7 @@ div.formContainer {
 	position: relative;
 }
 
+
 div.saveButtonContainer {
 	float: left;
 	width: 30%;
@@ -626,6 +628,7 @@ form.addAnExpense > div.formLabel {
 	text-align: right;
 }
 
+
 input[type=text], input[type="button"], textarea {
 	font-size: 17px;
 	border: 1px solid #CDCDCD;
@@ -648,14 +651,45 @@ input[type="button"] {
 	background: #15ADFF;
 	background: -moz-linear-gradient(center top, #15ADFF, #076EA6) repeat scroll 0 0 transparent;
     background:-webkit-gradient(linear, left top, left bottom, from(#15ADFF), to(#076EA6));
-    padding: 3%;
-    margin: 3%;
+    padding: 5px;
+    margin: 5px;
 	
 }
 
 input[type="button"]:hover {
 	cursor: pointer;
 	background: #FFA500;
+}
+
+@media handheld, screen and (max-width: 1300px) {
+	div.formContainer {
+		width: 90%;
+		margin-left: 2%;
+	}
+
+	.formLabel {
+		width: 90%;
+	}
+
+	.formField {
+		width: 90%;
+		padding-left: 1%;
+	}
+
+	div.saveButtonContainer {
+		float: left;
+		width: 100%;
+		margin: 1% 1% 1% 1%;
+	}
+
+	form.addAnExpense > div.formLabel {
+		text-align: left;
+	}
+
+	input[type=text], textarea {
+		width: 100%;
+	}
+
 }
 
 .showError {
@@ -996,6 +1030,13 @@ table th[class*="span"],
   margin-left: 0;
 }
 /******************************************************************************************/
+.width20P {
+	width: 20% !important;
+}
+
+.noMinHeight {
+	min-height: 0 !important;
+}
 
 .marginLeft35P {
 	margin-left: 35%;
@@ -1003,6 +1044,10 @@ table th[class*="span"],
 
 .marginLeft5P {
 	margin-left: 5%;
+}
+
+.marginRight5P {
+	margin-right: 5% !important;
 }
 
 .floatRight {
@@ -1019,7 +1064,7 @@ table th[class*="span"],
 .informationBoxContainerOrange, 
 .informationBoxContainerLightBlue, 
 .informationBoxContainerBlack,
-.informationBoxContainerCloud {
+.informationBoxContainerContributor {
 	float: left;
 	width: 100%;
 	min-height: 600px;
@@ -1046,6 +1091,17 @@ table th[class*="span"],
 	background: -moz-linear-gradient(top, #666, #000);
 }
 
+.informationBoxContainerContributor {
+	width: 25%;
+	min-height: 0px;
+	background: #f0f0f0;
+	margin: 2%;
+}
+
+.informationBoxContainerContributor:first-child {
+	margin-left: 7%;
+}
+
 .informationBox {
 	/*border: 1px solid #CDCDCD;*/
 	width: 80%;
@@ -1055,13 +1111,28 @@ table th[class*="span"],
 	margin: 2% 2% 0 10%;
 }
 
-.informationBoxHeader, .informationBoxHeaderWhite, .informationBoxContent, .informationBoxContentWhite {
+.informationBoxContainerContributor .informationBox {
+	margin: 5%;
+	width: 90%;
+}
+
+.informationBoxHeader, 
+.informationBoxHeaderWhite, 
+.informationBoxContributorHeader, 
+.informationBoxContent, 
+.informationBoxContentWhite,
+.contributorContent {
 	color: #666666;
 	font-family: "Times New Roman", Times, serif !important;
 	font-size: 20px;
 	text-align: center;
 	padding-top: 2%;
 	line-height: 1.5;
+}
+
+.informationBoxContainerContributor .informationBoxContributorHeader {
+	font-size: 15px;
+	font-weight: bold;
 }
 
 .informationBoxHeader, .informationBoxHeaderWhite {
@@ -1079,7 +1150,7 @@ table th[class*="span"],
 	font-family: Helvetica !important;
 }
 
-.informationBoxContent a, .informationBoxContentWhite a {
+.informationBoxContent a, .informationBoxContentWhite a, .contributorContent a {
 	text-decoration: none;
 	color: inherit;
 	border-bottom: 1px dashed #CDCDCD;
@@ -1088,8 +1159,25 @@ table th[class*="span"],
 	font-weight: normal;
 }
 
-.informationBoxContent a:hover, .informationBoxContentWhite a:hover {
+.contributorContent, .contributorContent a {
+	font-weight: normal;
+	font-size: 15px;
+	text-align: left;
+}
+
+.informationBoxContent a:hover, .informationBoxContentWhite a:hover, .contributorContent a:hover {
 	opacity: 1;
+	border-bottom: 1px solid #CDCDCD;
+}
+
+@media handheld, screen and (max-width: 1300px) {
+	.informationBoxContainerContributor {
+		width: 90%;
+	}
+
+	.informationBoxContainerContributor:first-child {
+		margin-left: 2%;
+	}
 }
 
 .left30{

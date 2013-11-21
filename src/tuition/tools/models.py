@@ -13,6 +13,8 @@ class Expenses(CommonModel):
     amount = db.FloatProperty(default = 0.0, required = True)
     dateOfExpense = db.DateProperty(required = True)
     comments = db.TextProperty()
+    createdOn = db.DateTimeProperty(auto_now_add=True)
+    updatedOn = db.DateTimeProperty(auto_now=True)
 
 class Debt(CommonModel):
 	user = db.ReferenceProperty(required = True)
@@ -26,3 +28,10 @@ class Debt(CommonModel):
 	comments = db.TextProperty()
 	createdOn = db.DateTimeProperty(auto_now_add=True)
 	updatedOn = db.DateTimeProperty(auto_now=True)
+
+	@property
+	def calendarReminderURL(self):
+		from tuition.urlPatterns import UrlPattern
+		from tuition.utils.utils import URLCreator
+
+		return '%s?key=%s' % (URLCreator(UrlPattern.VIEW_DEBTS), str(self.key()))

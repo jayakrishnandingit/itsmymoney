@@ -83,7 +83,9 @@
 							<li><a href="{% url tuition.tools.views.viewUserDebts %}">View Debts</a></li>
 						</ul>	
 					</li>
+					<li><a href="{% url tuition.home.views.contributor %}">Contributors</a></li>
 				{% endif %}
+				<li><a href="{% url tuition.home.views.home %}#contactUs">Contact Us</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -138,7 +140,12 @@
 				<a href="/#contactUs">
 					Contact Us
 				</a>
-			</div>	
+			</div>
+			<div class="footerContent">
+				<a href="{% url tuition.home.views.contributor %}">
+					Contributors
+				</a>
+			</div>
 		</div>
 		<div class="footerSub">
 			<div class="footerContent">

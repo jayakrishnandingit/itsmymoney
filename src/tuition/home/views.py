@@ -7,7 +7,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 def home(request):
-    from tuition.settings import SITE_SUPPORT_EMAIL
     from tuition.utils.manager import AppManager, UserFilter
 
     UserFilter().checkUserRole(request.path)
@@ -16,6 +15,14 @@ def home(request):
                        'loggedInEmployee'   : AppManager.getUserByEmail(AppManager.getCurrentLoggedInUser().email()),
                        }
     return render_to_response('home.html', template_values, context_instance=RequestContext(request))
+
+def contributor(request):
+    from tuition.utils.manager import AppManager
+
+    template_values = {
+        'loggedInEmployee'   : AppManager.getUserByEmail(AppManager.getCurrentLoggedInUser().email())
+    }
+    return render_to_response('contributors.html', template_values, context_instance=RequestContext(request))    
 
 def custom404(request):
     from tuition.settings import SITE_SUPPORT_EMAIL

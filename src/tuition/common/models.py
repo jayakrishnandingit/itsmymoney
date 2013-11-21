@@ -20,6 +20,17 @@ class CommonModel(db.Model):
 			logging.info('Error occurred while serializing %s. %s' % (self.__class__.__name__, e.message))
 			pass
 
+		try:
+			output['name'] = self.name
+		except AttributeError as e:
+			logging.info(e.message)
+			pass
+		try:
+			output['calendarReminderURL'] = self.calendarReminderURL
+		except AttributeError as e:
+			logging.info(e.message)
+			pass
+
 		for key, prop in self.properties().iteritems():
 			value = getattr(self, key)
 			if value is None or isinstance(value, BASIC_TYPES):

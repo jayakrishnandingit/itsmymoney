@@ -17,8 +17,10 @@ urlpatterns = patterns(
                        (UrlPattern.ADD_DEBT, 'tuition.tools.views.addADebt'),
                        (UrlPattern.EXPORT_EXPENSE, 'tuition.tools.views.export'),
                        (UrlPattern.AJAX_CALL, 'tuition.json.ajaxHandler.mainHandler'),
+                       (UrlPattern.VIEW_CONTRIBUTORS, 'tuition.home.views.contributor'),
                        (UrlPattern.GOOGLE_API_CALLBACK, decorator.callback_handler),
 
                        #################### Update script urls starts here. ########################
                        # (r'^updateExpenses$', 'tuition.utils.updateScripts.updateExpenses'),
+                       # (r'^updateExpensesCreatedAndUpdatedOn$', 'tuition.utils.updateScripts.updateExpensesCreatedAndUpdatedOn'),
                        )

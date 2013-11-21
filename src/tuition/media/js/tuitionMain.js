@@ -948,6 +948,7 @@ function showReturnedDebtAction(elem) {
 	$(elem).off('click');
 	$(elem).attr('title', 'Returned');
 	$(elem).prev('img.delete').remove();
+	$(elem).next('img.calendar').remove();
 }
 
 function markAsReturned() {

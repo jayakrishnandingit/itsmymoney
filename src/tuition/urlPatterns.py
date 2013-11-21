@@ -17,4 +17,5 @@ class UrlPattern(object):
     REGISTER_USER = r'^register$'
     USER_PROFILE = r'^user/profile$'
     EXPORT_EXPENSE = r'^export$'
+    VIEW_CONTRIBUTORS = r'^contributors$'
     GOOGLE_API_CALLBACK = r'^%s$' % decorator.callback_path
