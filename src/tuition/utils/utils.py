@@ -144,18 +144,58 @@ class GooglePlusService(object):
 			'userInfo' : self.user_response
 		}
 
-class GoogleCalendarservice(object):
+class GoogleCalendarService(object):
 	request = None
 	serializedObjects = []
 
-	def __init__(self, serializedObjects, request, **formatSpecifiers):
-		self.serializedObjects = serializedObjects
+	def __init__(self, serializedObject, request, **formatSpecifiers):
+		self.serializedObject = serializedObject
 		self.request = request
 		self.formatSpecifiers = formatSpecifiers
 
+	def createEvent(self, recurringEvent=False):
+		import datetime
+
+		namePrefix = self.formatSpecifiers['namePrefix']
+		description = self.formatSpecifiers.get('description', '')
+		start = datetime.datetime.strptime(self.serializedObject['returnDate'], '%d/%m/%Y').date()
+		end = start + datetime.timedelta(days=1)
+
+		event = {
+			'summary' : namePrefix,
+			'description' : description,
+			'location' : '',
+			'start' : {
+				'date' : start.strftime('%Y-%m-%d')
+			},
+			'end' : {
+				'date' : end.strftime('%Y-%m-%d')
+			}
+		}
+		if recurringEvent:
+			# revent = {
+			# 	"recurrence" : [
+  	# 				"RRULE:FREQ=WEEKLY;UNTIL=20110701T160000Z",
+  	# 				# EXRULE, RDATE, EXDATE...
+			# 	]
+			# }
+			# event.update(revent)
+			pass
+		return event
+
 	@decorator.oauth_required
 	def insertEvent(self, recurringEvent=False):
-		pass
+		http = decorator.http()
+		event = self.createEvent()
+		self.response = calendar_service.events().insert(
+			calendarId='primary',
+			sendNotifications=True, 
+			body=event
+		).execute(http=http)
+		return {
+			'isSaved' : True,
+			'response' : self.response
+		}
 
 def URLCreator(urlPattern, *keys):
     """A utility method to convert custom defined URLs(probably URLs in regex) to real time URLs for redirection.

@@ -106,7 +106,7 @@ function showSaveError(id) {
 	});
 	$('#' + id).show();
 	$('#alertError').fadeIn(1000);
-	setTimeout(function () {$("#alertError").fadeOut(1000);}, 4000);
+	setTimeout(function () {$("#alertError").fadeOut(1000);}, 5000);
 }
 
 function saveUser() {
@@ -870,7 +870,6 @@ function filterDebtByMonth() {
     	DEBT_BY_WEEK = null;
     	DEBT_BY_MONTH = debts;
     	var debtList = debts.debts;
-    	console.log(debtList);
     	if (debtList.length > 0) {
     		$('#debtListContainer').loadTemplate($('#debtListTemplate'), debtList);
     		bindOnClickForDebtList();
@@ -941,6 +940,14 @@ function bindOnClickForDebtList() {
 			deleteDebt($(this));
 		});
 	});
+	/*$.each($('.calendar'), function (index, elem) {
+		$(elem).on('click', function () {
+			showPopUpForm('markOnCalendarContainer');
+			var td = $(this).parent('td');
+			var returnDateTd = td.prev('td.debt_returnDate');
+			$('#id_reminderDate').val($(returnDateTd).html());
+		});
+	});*/
 }
 
 function showReturnedDebtAction(elem) {
@@ -948,7 +955,7 @@ function showReturnedDebtAction(elem) {
 	$(elem).off('click');
 	$(elem).attr('title', 'Returned');
 	$(elem).prev('img.delete').remove();
-	$(elem).next('img.calendar').remove();
+	$(elem).next().find('img.calendar').remove();
 }
 
 function markAsReturned() {

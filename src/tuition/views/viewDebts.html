@@ -12,6 +12,15 @@
     classHandle = classHandle.DEBT;
     var addDebtURI = '{% url tuition.tools.views.addADebt %}';
     var exportHandle = {{exportHandle|jsonify|safe}};
+    $(document).ready(function () {
+      {% if isCalendar %}
+        {% if isSaved %}
+          showSaveSuccess('calendarSuccessAlert');
+        {% else %}
+          showSaveError('calendarErrorAlert');
+        {% endif %}
+      {% endif %}
+    });
 	</script>
 {% endblock %}
 {% block alertSuccessContent %}
@@ -26,6 +35,13 @@
     <br clear="all" />
     We have marked this as your expense against the Return date.
   </div>
+  <div id="calendarSuccessAlert" class="content">
+    <b>Great!</b> You successfully marked your debt on your Google Calendar.
+    <br clear="all" />
+    A reminder has been set on {{startDate}} which is the return date of the debt.
+    <br clear="all" />
+    You can view your calendar entry <a href="{{linkToCalendar}}" target="_blank">here</a>
+  </div>
 {% endblock %}
 {% block alertErrorContent %}
 	<div id="deleteDebtErrorAlert" class="content">
@@ -33,6 +49,19 @@
 	</div>
   <div id="debtErrorAlert" class="content">
     <b>Oops!</b> Clean a few things up and try submitting again.
+  </div>
+  <div id="calendarErrorAlert" class="content">
+    <b>Oops!</b> Something did not go right.
+    {% if alreadyMarked %}
+      You have already marked this debt on your calendar on {{alreadyMarked|date:'d M Y'}}
+    {% else %}
+      {% if falseDate %}
+        <br clear="all" />
+        You tried to set reminder on {{falseDate|date:'d M Y'}} which is the Expected Return date of the debt.
+        <br clear="all" />
+        We cannot set reminder for a date in the past.
+      {% endif %}
+    {% endif %}
   </div>
 {% endblock %}
 {% block content %}
@@ -104,6 +133,33 @@
       </form>
     </div>
   </div>
+  <div class="popupContainer">
+    <div id="markOnCalendarContainer" class="formContainer">
+      <form action="" method="post" class="addAnExpense" name="markOnCalendarForm" id="markOnCalendarForm">
+        <div class="formLabel requiredField">
+          Reminder Date
+        </div>
+        <div class="formField">
+          {{ calendarForm.reminderDate }}
+          <br clear="all" />
+          <span id="error_calendarForm" name="calendarForm" class="showError"></span>
+        </div>
+        <div class="formLabel">
+          Description
+        </div>
+        <div class="formField">
+          {{ calendarForm.calendarDecsription }}
+          <br clear="all" />
+          <span id="error_calendarDecsription" name="calendarDecsription" class="showError"></span>
+        </div>
+        <div class="saveButtonContainer">
+          <input type="button" value="Save" id="saveMarkOnCalendar">
+          <input type="button" value="Close" id="cancelSaveMarkOnCalendar" class="cancelSave">
+          <input type="hidden" value="" name="debtReturnKeyHidden" id="debtReturnKeyHidden" />
+        </div>
+      </form>
+    </div>
+  </div>
 	<table class="table table-striped">
    		<thead>
       		<tr class="blackHead">
@@ -150,6 +206,14 @@
       $('#cancelSaveMarkAsReturned').on('click', function() {
           closePopUpForm('markAsReturned', true);
       });
+      /*$('#saveMarkOnCalendar').on('click', function() {
+          markDebtOnCalendar($(this));
+          $(this).prop('disabled',true);
+          $(this).val('Wait');
+      });
+      $('#cancelSaveMarkOnCalendar').on('click', function() {
+          closePopUpForm('markOnCalendarForm', true);
+      });*/
   		/*$('#sortExpenseByDate').bind('click', sortedByDate);
   		$('#sortExpenseByAmount').bind('click', sortedByAmount);
   		$('#sortExpenseByType').bind('click', sortedByType);*/
@@ -162,13 +226,14 @@
         <td data-content="type"></td>  
         <td class="amount formatme" data-content="amount"></td>
         <td data-content="incurredDate"></td>
-        <td data-content="returnDate"></td>
+        <td class="debt_returnDate" data-content="returnDate"></td>
         <td data-content="expenseOfMonth"></td>
         <td data-content="comments"></td>
         <td>
           <img class="image action delete" src="/images/delete.png" alt="Delete" title="Delete Debt" />
           <img data-class-append="hasReturned" class="image action accept" src="/images/accept.png" alt="Return" title="Mark as Returned" />
-          <!--<img class="image action calendar" src="/images/calendar.png" alt="Return" title="Set Reminder on Google Calendar" data-link-wrap="calendarReminderURL" />-->
+          <img class="image action calendar" src="/images/calendar.png" alt="Return" title="Set Reminder on Google Calendar" data-link-wrap="calendarReminderURL" />
+          <!--<img data-id="calendarReminderURL" data-class-append="markedOnCalendar" class="image action calendar" src="/images/calendar.png" alt="Return" title="Set Reminder on Google Calendar" />-->
         </td> 
       </tr>
     </script>

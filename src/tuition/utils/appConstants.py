@@ -19,9 +19,16 @@ LOGOUT_URLS = {
 
 GOOGLE_API_WEB_APP_CLIENT_ID = '1078565712000.apps.googleusercontent.com'
 GOOGLE_API_WEB_APP_CLIENT_SECRET = 'kNIC0A7YPydFr3FHx8nG5x88'
-GOOGLE_API_SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/plus.login']
+GOOGLE_API_SCOPES = [
+	'https://www.googleapis.com/auth/drive', 
+	'https://www.googleapis.com/auth/plus.login',
+	'https://www.googleapis.com/auth/calendar'
+]
 
 MONTH_NUM_FULL_NAME_DICT = {i+1:calendar.month_name[i+1] for i in xrange(12)}
+
+MAIL_SENDER_NAME = 'ItsMyMoney'
+MAIL_SUBJECT_PREFIX = 'ItsMyMoney '
 
 if IS_DEV_ENV:
 	from localAppConstants import *

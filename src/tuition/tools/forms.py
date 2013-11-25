@@ -48,6 +48,10 @@ class DebtReturnForm(djangoSimpleForm.Form):
 			raise ValidationError('Date must be greater than %s.' % datetime.datetime.strftime(self.debtIncurredDate, '%d/%m/%Y'))
 		return markedDate
 
+class DebtCalendarForm(djangoSimpleForm.Form):
+	reminderDate = djangoSimpleForm.DateField(input_formats = ["%d/%m/%Y"], widget = djangoSimpleForm.DateInput(attrs = {'placeholder' : 'DD/MM/YYYY'}), required = True)
+	calendarDecsription = StrippedCharField(widget = djangoSimpleForm.Textarea(), required = False)
+
 class ExpenseYearFilter(djangoSimpleForm.Form):
 	import datetime
 	from tuition.common.forms import FormUtils

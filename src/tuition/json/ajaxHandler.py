@@ -36,8 +36,10 @@ class AjaxMethods(JSONParser):
 	httpRequest = None
 
 	def saveUser(self, serializedFormValues):
+		from google.appengine.ext import deferred
 		from tuition.user.models import User
 		from tuition.utils.manager import AppManager
+		from tuition.utils.mailer import SendNotification
 		from tuition.user.forms import UserRegistrationForm
 
 		isEdit = False
@@ -61,14 +63,17 @@ class AjaxMethods(JSONParser):
 			}
 			if not isEdit:
 				savedUser = User(**dictToSave)
+				savedUserKey = db.put(savedUser)
+				deferred.defer(SendNotification().sendRegistrationSuccessMail, str(savedUserKey))
 			else:
 				savedUser = User.get(serializedFormValues.get('keyHidden'))
 				for key, value in dictToSave.iteritems():
 					setattr(savedUser, key, value)
+				savedUserKey = db.put(savedUser)
 			return self.respond(
 				isSaved=True, 
 				isEdit=isEdit,
-				savedUserKey=str(db.put(savedUser)), 
+				savedUserKey=str(savedUserKey),
 				savedValues=savedUser.toDict
 			)
 		else:

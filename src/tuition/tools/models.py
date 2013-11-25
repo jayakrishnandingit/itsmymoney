@@ -23,6 +23,7 @@ class Debt(CommonModel):
 	amount = db.FloatProperty(default = 0.0, required = True)
 	incurredDate = db.DateProperty(required = True)
 	returnDate = db.DateProperty(required = True)
+	markedOnCalendar = db.DateProperty()
 	hasReturned = db.BooleanProperty(default=False)
 	expenseOfMonth = db.DateProperty()
 	comments = db.TextProperty()

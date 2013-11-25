@@ -98,30 +98,65 @@ def export(request):
     return response
 
 def viewUserDebts(request, userKey=None):
+    from models import Debt
+    from google.appengine.ext import db
     from tuition.settings import SITE_SUPPORT_EMAIL
     from tuition.utils.manager import AppManager
-    from models import Debt
-    from forms import DebtForm, ExpenseYearFilter, DebtReturnForm
+    from forms import DebtForm, ExpenseYearFilter, DebtReturnForm, DebtCalendarForm
     from tuition.utils.appConstants import MONTH_NUM_FULL_NAME_DICT
-    from tuition.utils.utils import ExportHandle, ExportClassHandle
+    from tuition.utils.utils import ExportHandle, ExportClassHandle, GoogleCalendarService
 
-    # keyToSetReminder = request.GET.get('key', None)
-    # if keyToSetReminder:
-    #   debt = Debt.get(keyToSetReminder)
-    #   serializedObjectList = [debt.toDict]
-    #   GoogleCalendarService()
+    additional_template_values = {}
+    isSaved = False
+    isCalendar = False
+    falseDate = None
+    alreadyMarked = None
     loggedInEmployee = AppManager.getUserByEmail(AppManager.getCurrentLoggedInUser().email())
     form = DebtForm(initial={'incurredDate' : datetime.date.today().strftime('%d/%m/%Y')})
     markAsReturnForm = DebtReturnForm()
+    calendarForm = DebtCalendarForm()
+
+    keyToSetReminder = request.GET.get('key', None)
+    if keyToSetReminder:
+      isCalendar = True
+      debt = Debt.get(keyToSetReminder)
+      alreadyMarked = debt.markedOnCalendar
+      falseDate = debt.returnDate
+      if not debt.markedOnCalendar and debt.returnDate > datetime.date.today():
+        alreadyMarked = None
+        falseDate = None
+        returnValues = GoogleCalendarService(
+          serializedObject = debt.toDict,
+          request=request,
+          namePrefix='Debt Return'
+        ).insertEvent()
+        if isinstance(returnValues, dict):
+          additional_template_values = {
+            'isSaved' : returnValues.get('isSaved'),
+            'linkToCalendar' : returnValues.get('response', {}).get('htmlLink'),
+            'startDate' : returnValues.get('response', {}).get('start', {}).get('date')
+          }
+          debt.markedOnCalendar = debt.returnDate
+          db.put(debt)
+        else:
+          return response
+
     template_values = {
-                       'loggedInEmployee'   : loggedInEmployee,
-                       'yearFilterForm'     : ExpenseYearFilter(),
-                       'monthNameDict'      : MONTH_NUM_FULL_NAME_DICT,
-                       'exportHandle'       : ExportHandle.asDict(),
-                       'classHandle'        : ExportClassHandle.asDict(),
-                       'form'               : form,
-                       'markAsReturnForm'   : markAsReturnForm
-                       }
+       'isSaved' : isSaved,
+       'isCalendar' : isCalendar,
+       'falseDate' : falseDate,
+       'alreadyMarked' : alreadyMarked,
+       'loggedInEmployee'   : loggedInEmployee,
+       'yearFilterForm'     : ExpenseYearFilter(),
+       'monthNameDict'      : MONTH_NUM_FULL_NAME_DICT,
+       'exportHandle'       : ExportHandle.asDict(),
+       'classHandle'        : ExportClassHandle.asDict(),
+       'form'               : form,
+       'markAsReturnForm'   : markAsReturnForm,
+       'calendarForm'       : calendarForm
+    }
+    if additional_template_values:
+      template_values.update(additional_template_values)
     return render_to_response('viewDebts.html', template_values, context_instance=RequestContext(request))
 
 def addADebt(request):
